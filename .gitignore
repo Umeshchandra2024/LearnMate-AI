@@ -10,3 +10,5 @@ coverage/
 client/.vite/
 prisma/dev.db
 scripts/eval-results/*.json
+DEVELOPMENT.md
+SECURITY.md
