@@ -46,7 +46,15 @@ npm run db:migrate                # create tables + the pgvector extension
 
 ## Running locally
 
-Run these in three separate terminals:
+`/shared` is consumed by `/server` and `/worker` as a built package (`@asc/shared`, resolved
+via its `dist/` output — see "Deployment" below for why), so build it once before starting
+either:
+
+```bash
+npm run build:shared
+```
+
+Then run these in three separate terminals:
 
 ```bash
 npm run dev:server   # API on http://localhost:4000
@@ -54,17 +62,52 @@ npm run dev:worker    # BullMQ job processor
 npm run dev:client    # Vite dev server on http://localhost:5173 (proxies /api to :4000)
 ```
 
+If you're actively editing `/shared`, run `npm run dev:shared` in a fourth terminal — it
+recompiles on save, and `tsx watch` (used by `dev:server`/`dev:worker`) picks up the change
+and restarts automatically.
+
 Visit http://localhost:5173, sign up, create a Space, create a Project inside it, and
 upload a PDF to see the processing pipeline run.
 
 ## Testing
 
 ```bash
-npm run test --workspace server   # cross-user isolation tests (Jest + Supertest)
+npm run test            # both workspaces below, in sequence
+npm run test:server     # cross-user isolation, admin access control, mastery math,
+                         # adaptive selection, Tutor groundedness (Jest + Supertest)
+npm run test:worker     # material-processing job idempotency (Jest)
 ```
 
-This runs against whatever `DATABASE_URL` is in `.env` — it creates and cleans up its own
-test users, but it's a real integration test against a real database, not an in-memory mock.
+These run against whatever `DATABASE_URL`/`REDIS_URL`/API keys are in `.env` — they create
+and clean up their own test data, but they're real integration tests against real
+infrastructure (including real LLM calls), not in-memory mocks.
+
+## Deployment
+
+Deploy target: Vercel (client) + Render (server + worker, as two separate services sharing
+one Redis and one Neon Postgres).
+
+**`/shared` must be built before `/server` or `/worker`** — both import it as the
+`@asc/shared` package, which npm workspaces resolves via a symlink into `/shared` itself.
+`server`/`worker`'s compiled output does `require("@asc/shared")`, which Node resolves
+through `shared/package.json`'s `main` field — pointing at `shared/dist/index.js`, not
+`shared/src/index.ts`. (Local dev only works without this extra step because `tsx` has its
+own loader that can execute `.ts` files reached via `node_modules` resolution; plain `node`,
+used in production, cannot.)
+
+**For each Render service, leave "Root Directory" unset (the repository root) — do not set
+it to `/server` or `/worker`.** npm workspaces are declared at the repo root; if Render's
+build runs from inside `/server` alone, `/shared` is a sibling directory outside that root
+and won't resolve or build correctly, root directory or not.
+
+| Service | Build Command | Start Command |
+|---|---|---|
+| API | `npm run render-build:api` | `node server/dist/index.js` |
+| Worker | `npm run render-build:worker` | `node worker/dist/index.js` |
+
+Both `render-build:*` scripts run `npm install` then build `/shared` before their own
+workspace, from the repo root, so the working directory always matches where the
+`workspaces` field in the root `package.json` is declared.
 
 ## Notes
 
