@@ -1,0 +1,33 @@
+{
+  "name": "ai-study-companion",
+  "private": true,
+  "version": "0.1.0",
+  "workspaces": [
+    "client",
+    "server",
+    "worker",
+    "shared"
+  ],
+  "scripts": {
+    "dev:client": "npm run dev --workspace client",
+    "dev:server": "npm run dev --workspace server",
+    "dev:worker": "npm run dev --workspace worker",
+    "build:shared": "npm run build --workspace shared",
+    "build:server": "npm run build --workspace server",
+    "build:worker": "npm run build --workspace worker",
+    "build:client": "npm run build --workspace client",
+    "db:generate": "prisma generate --schema=./prisma/schema.prisma",
+    "db:migrate": "prisma migrate dev --schema=./prisma/schema.prisma",
+    "db:studio": "prisma studio --schema=./prisma/schema.prisma",
+    "eval:tutor": "tsx scripts/eval-tutor.ts",
+    "eval:quiz": "tsx scripts/eval-quiz.ts"
+  },
+  "devDependencies": {
+    "prisma": "^5.20.0",
+    "typescript": "^5.6.3",
+    "tsx": "^4.19.1"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.20.0"
+  }
+}
