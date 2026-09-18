@@ -20,6 +20,7 @@
     "build": "npm run build:shared && npm run build:server && npm run build:worker && npm run build:client",
     "render-build:api": "npm install && npm run build:shared && npm run build:server",
     "render-build:worker": "npm install && npm run build:shared && npm run build:worker",
+    "render-build:combined": "npm install && npm run build:shared && npm run build:server && npm run build:worker",
     "db:generate": "prisma generate --schema=./prisma/schema.prisma",
     "db:migrate": "prisma migrate dev --schema=./prisma/schema.prisma",
     "db:studio": "prisma studio --schema=./prisma/schema.prisma",
