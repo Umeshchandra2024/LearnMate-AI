@@ -18,10 +18,15 @@ const loginSchema = z.object({
 
 function setAuthCookie(res: Response, token: string) {
   const env = getEnv();
+  // SameSite=Lax blocks the cookie on cross-site requests (e.g. the Vercel frontend calling
+  // the Render API), so production needs "none" — which browsers only honor alongside
+  // Secure, hence both being tied to the same NODE_ENV check. Local dev (same-origin via
+  // Vite's proxy, plain HTTP) keeps "lax"/non-secure, which is what actually works over
+  // localhost HTTP.
   res.cookie(env.COOKIE_NAME, token, {
     httpOnly: true,
     secure: env.NODE_ENV === "production",
-    sameSite: "lax",
+    sameSite: env.NODE_ENV === "production" ? "none" : "lax",
     maxAge: 7 * 24 * 60 * 60 * 1000,
   });
 }
