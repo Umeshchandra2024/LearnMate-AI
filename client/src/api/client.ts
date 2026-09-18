@@ -1,3 +1,5 @@
+const API_BASE_URL = import.meta.env.VITE_API_URL ?? "";
+
 export class ApiError extends Error {
   constructor(
     public readonly status: number,
@@ -8,7 +10,7 @@ export class ApiError extends Error {
 }
 
 async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
-  const res = await fetch(`/api${path}`, {
+  const res = await fetch(`${API_BASE_URL}/api${path}`, {
     credentials: "include",
     headers: {
       ...(options.body instanceof FormData ? {} : { "Content-Type": "application/json" }),
