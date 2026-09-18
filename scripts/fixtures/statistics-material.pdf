@@ -1,0 +1,15 @@
+%PDF-1.4
+1 0 obj<</Type/Catalog/Pages 2 0 R>>endobj
+2 0 obj<</Type/Pages/Kids[3 0 R]/Count 1>>endobj
+3 0 obj<</Type/Page/Parent 2 0 R/Resources<</Font<</F1 5 0 R>>>>/MediaBox[0 0 612 900]/Contents 4 0 R>>endobj
+4 0 obj<</Length 1960>>stream
+BT /F1 11 Tf 40 750 Td 15 TL (Introduction to Statistics for Data Science) Tj T* (Descriptive statistics summarize a dataset using measures like mean, median, mode, variance, and standard deviation. The mean is the arithmetic average, while the median is the middle value when data is sorted, making it more robust to outliers.) Tj T* (Probability distributions describe how likely different outcomes are. The normal distribution is symmetric and bell shaped, characterized by its mean and standard deviation, and appears frequently due to the central limit theorem.) Tj T* (Hypothesis testing evaluates whether observed data supports a claim about a population. A null hypothesis represents no effect, and a p value below a significance threshold like 0.05 leads to rejecting the null hypothesis.) Tj T* (Confidence intervals provide a range of plausible values for a population parameter, calculated from sample data. A 95 percent confidence interval means that if we repeated the sampling process many times, 95 percent of intervals would contain the true parameter.) Tj T* (Correlation measures the strength and direction of a linear relationship between two variables, ranging from negative one to positive one. Correlation does not imply causation, since a third confounding variable may explain both.) Tj T* (Regression analysis models the relationship between a dependent variable and one or more independent variables. Linear regression fits a straight line by minimizing the sum of squared residuals between predicted and actual values.) Tj T* (The central limit theorem states that the sampling distribution of the sample mean approaches a normal distribution as sample size increases, regardless of the population distribution shape, which underlies much of inferential statistics.) Tj T* (Key vocabulary: mean, median, standard deviation, normal distribution, p value, confidence interval, correlation, regression, central limit theorem.) Tj T* ET
+endstream endobj
+5 0 obj<</Type/Font/Subtype/Type1/BaseFont/Helvetica>>endobj
+xref
+0 6
+0000000000 65535 f 
+trailer<</Size 6/Root 1 0 R>>
+startxref
+0
+%%EOF
