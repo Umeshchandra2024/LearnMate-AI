@@ -1,0 +1,23 @@
+{
+  "name": "@asc/shared",
+  "version": "0.1.0",
+  "private": true,
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@huggingface/inference": "^3.3.6",
+    "@prisma/client": "^5.20.0",
+    "ioredis": "^5.4.1",
+    "bullmq": "^5.13.2",
+    "zod": "^3.23.8",
+    "groq-sdk": "^0.7.0",
+    "openai": "^4.63.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.3",
+    "@types/node": "^22.7.4"
+  }
+}
