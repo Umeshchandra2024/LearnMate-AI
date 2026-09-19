@@ -16,17 +16,30 @@ const loginSchema = z.object({
   password: z.string().min(1),
 });
 
-function setAuthCookie(res: Response, token: string) {
-  const env = getEnv();
-  // SameSite=Lax blocks the cookie on cross-site requests (e.g. the Vercel frontend calling
-  // the Render API), so production needs "none" — which browsers only honor alongside
-  // Secure, hence both being tied to the same NODE_ENV check. Local dev (same-origin via
-  // Vite's proxy, plain HTTP) keeps "lax"/non-secure, which is what actually works over
-  // localhost HTTP.
-  res.cookie(env.COOKIE_NAME, token, {
+// SameSite=Lax blocks the cookie on cross-site requests (e.g. the Vercel frontend calling
+// the Render API), so production needs "none" — which browsers only honor alongside
+// Secure, hence both being tied to the same NODE_ENV check. Local dev (same-origin via
+// Vite's proxy, plain HTTP) keeps "lax"/non-secure, which is what actually works over
+// localhost HTTP.
+//
+// These attributes are shared with logout on purpose: a browser ignores a Set-Cookie that
+// expires a cookie with different Secure/SameSite/Path attributes than it was set with
+// (a cross-site response without SameSite=None is discarded outright), which would make
+// clearCookie a silent no-op. maxAge is kept out of the shared set because Express turns it
+// into a fresh expiry, which would override clearCookie's expired date.
+function authCookieBaseOptions() {
+  const isProduction = getEnv().NODE_ENV === "production";
+  return {
     httpOnly: true,
-    secure: env.NODE_ENV === "production",
-    sameSite: env.NODE_ENV === "production" ? "none" : "lax",
+    secure: isProduction,
+    sameSite: isProduction ? ("none" as const) : ("lax" as const),
+    path: "/",
+  };
+}
+
+function setAuthCookie(res: Response, token: string) {
+  res.cookie(getEnv().COOKIE_NAME, token, {
+    ...authCookieBaseOptions(),
     maxAge: 7 * 24 * 60 * 60 * 1000,
   });
 }
@@ -72,8 +85,7 @@ export async function login(req: Request, res: Response) {
 }
 
 export async function logout(_req: Request, res: Response) {
-  const env = getEnv();
-  res.clearCookie(env.COOKIE_NAME);
+  res.clearCookie(getEnv().COOKIE_NAME, authCookieBaseOptions());
   res.status(204).send();
 }
 

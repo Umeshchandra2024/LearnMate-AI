@@ -16,10 +16,17 @@ interface Case {
   expectSufficientEvidence: boolean;
 }
 
+// The seeded "Cell Biology Unit" material is a single short chunk. It states what
+// photosynthesis is and who does it, the overall reaction, that mitochondria break down
+// glucose in respiration, and how the two processes form a cycle — but it only *lists*
+// chloroplast/chlorophyll/ATP as vocabulary and never says where photosynthesis happens or
+// what ATP is. Answerable cases must stay within what it actually states: earlier versions
+// asked about those unstated facts and failed consistently because the Tutor correctly
+// declined (sufficientEvidence: false), i.e. the expectation was wrong, not the Tutor.
 const ANSWERABLE_CASES: Case[] = [
-  { question: "What is photosynthesis and where does it happen in the cell?", expectSufficientEvidence: true },
-  { question: "What role does chlorophyll play in photosynthesis?", expectSufficientEvidence: true },
-  { question: "What is ATP and which organelle produces it?", expectSufficientEvidence: true },
+  { question: "What is photosynthesis and which organisms perform it?", expectSufficientEvidence: true },
+  { question: "What are the inputs and outputs of the overall photosynthesis reaction?", expectSufficientEvidence: true },
+  { question: "Which organelle breaks down glucose using oxygen during cellular respiration?", expectSufficientEvidence: true },
   { question: "How are photosynthesis and cellular respiration related to each other?", expectSufficientEvidence: true },
 ];
 
