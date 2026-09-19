@@ -12,3 +12,9 @@ prisma/dev.db
 scripts/eval-results/*.json
 DEVELOPMENT.md
 SECURITY.md
+ai-prompts.md
+ai-prompts.pdf
+ai-usage.md
+ai-usage.pdf
+architecture.md
+architecture.pdf
